@@ -30,6 +30,8 @@ Let's see how to get started once you have cloned the repository. Make sure you 
 - `docker stop <container_id or container_name>`: Stops a running container. Even if you stop the running container, the container is still available in the background. If you want to completely get rid of the container, you need to delete it by using the below command.
 - `docker rm <container_id or container_name>`: Permanently delete the corresponding container.
 
+- `docker container logs <container_id or container_name> --follow`: to get the logs of the container
+
 ## Docker image commands
 - `docker images`: Lists all the available/downloaded images.
 - `docker rmi <image_name>`: Remove the docker image; ensure that no containers are running before deleting the image.
