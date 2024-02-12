@@ -1,35 +1,36 @@
 # syntax=docker/dockerfile:1
 
-# Comments are provided throughout this file to help you get started.
-# If you need more help, visit the Dockerfile reference guide at
-# https://docs.docker.com/go/dockerfile-reference/
-
-# Want to help us make this template better? Share your feedback here: https://forms.gle/ybq9Krt8jtBL3iCk7
-
+# Set the base Python version for the image
 ARG PYTHON_VERSION=3.10.10
+
+# Use an official Python runtime as a parent image
 FROM python:${PYTHON_VERSION} as base
 
-# Install Rust compiler
+# Install Rust compiler, which might be needed for compiling Python packages that require Rust -- transformers package
 RUN curl https://sh.rustup.rs -sSf | bash -s -- -y
+# Add Rust compiler's binary directory to PATH, making the `cargo` command available.
 ENV PATH="/root/.cargo/bin:${PATH}"
 
-# Prevents Python from writing pyc files.
+# Prevent Python from writing pyc files to disc (Python bytecode files), which is useful for minimizing the image size and avoiding potential issues with file system layers.
 ENV PYTHONDONTWRITEBYTECODE=1
 
-# Create a working directory named /code within the container.
+# Set the working directory inside the container to /code. Future commands will run from this directory.
 WORKDIR /code
 
-COPY ./requirements.txt /code/requirements.txt
-RUN pip install --no-cache-dir -r /code/requirements.txt
+# Copy the requirements.txt file from your host to /code/requirements.txt inside the container.
+COPY ./requirements.txt requirements.txt
+# Install Python dependencies defined in requirements.txt without storing the cache, to keep the image size down.
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the whole source directory from local into the container.
+# Copy the application source code from your host's current directory's src folder to the container's /code/src directory.
 COPY ./src ./src
 
-# Keeps Python from buffering stdout and stderr to avoid situations where
-# the application crashes without emitting any logs due to buffering.
+# Set an environment variable that prevents Python from buffering stdout and stderr.
+# This is useful for logging, ensuring that logs are output in real-time and not held in a buffer.
 ENV PYTHONUNBUFFERED=1
 
+# Inform Docker that the container listens on port 8000 at runtime. Note: This does not actually publish the port.
 EXPOSE 8000
 
-# Run the application. Specity the entry command to be run in the container.
-CMD uvicorn src.main:app --reload --port 8000 --host 0.0.0.0
+# Define the command to run the application using Uvicorn, specifying the app location, enabling reload for development, setting the port, and binding the host to 0.0.0.0 to make the container accessible from outside.
+CMD ["uvicorn", "src.main:app", "--reload", "--port", "8000", "--host", "0.0.0.0"]
