@@ -15,8 +15,8 @@ def read_root():
     return {"Hello": "World"}
 
 
-@app.post("/ask")
-def ask(text: str, image: UploadFile):
+@app.post("/ask/")
+def predict(text: str, image: UploadFile):
     content = image.file.read()
     image = Image.open(io.BytesIO(content))
     # image = Image(image.file)
