@@ -8,14 +8,16 @@
 # database or a cache. For examples, see the Awesome Compose repository:
 # https://github.com/docker/awesome-compose
 services:
-  app:
-    build: .
-    container_name: ml-model-server
-    command: uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload
+  app:  # This begins the definition of a service named "app".
+    build: .  # This instructs Docker Compose to build the Docker image from the Dockerfile in the current directory.
+    image: fastapi-image:latest  # Names the image that will be built or pulled. If the image does not exist locally, it will be built using the specified context and tagged as "fastapi-image:latest".
+    container_name: ml-model-server  # Specifies a custom name for the container. This is useful for referencing the container in Docker commands.
+    command: uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload  # Overrides the default command. This command starts a Uvicorn server with the FastAPI application located in "src/main.py", listens on all network interfaces (`0.0.0.0`), uses port 8000, and enables auto-reload for development.
     ports:
-      - 8000:8000
+      - 8000:8000  # <host_port: container_port> Maps port 8000 of the host to port 8000 of the container, making the application accessible through the host's IP address on port 8000.
     volumes:
-      - ./:/code
+      - ./:/code  # Mounts the current directory (where the docker-compose.yaml file is located) to the `/code` directory inside the container. This allows for live reloading of code changes without needing to rebuild the container.
+
 
 # The commented out section below is an example of how to define a PostgreSQL
 # database that your application can use. `depends_on` tells Docker Compose to
