@@ -1,6 +1,17 @@
+# FastAPI: A modern, fast (high-performance) web framework for building APIs with Python 3.7+ based on standard Python type hints.
 fastapi
+
+# Pillow: The Python Imaging Library (PIL) Fork, adds image processing capabilities to your Python interpreter.
 Pillow
+
+# python-multipart: A streaming multipart parser for Python. This is necessary for FastAPI to handle file uploads.
 python-multipart
+
+# torch: PyTorch is an open source machine learning library based on the Torch library, used for applications such as computer vision and natural language processing, primarily developed by Facebook's AI Research lab.
 torch
+
+# transformers: A library by Hugging Face offering thousands of pre-trained models to perform tasks on texts such as classification, information extraction, question answering, summarization, translation, and text generation, in over 100 languages.
 transformers
+
+# uvicorn: A lightning-fast ASGI server implementation, using uvloop and httptools. Uvicorn is required to serve FastAPI applications.
 uvicorn
